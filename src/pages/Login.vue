@@ -66,7 +66,7 @@
 
 <script>
 import config from '../config.js';
-import axios from 'axios';
+import {Network } from '../service/Network';
 import Navbar from '../components/general/Navbar'
 var qs = require('qs')
 export default {
@@ -77,21 +77,26 @@ export default {
             password : '',
         }
     },
+    beforeRouteEnter: (to, from, next) => {
+        let user = localStorage.getItem('user');
+        if(user != null) next({name : "Home"})
+        else next()
+    },
     methods : {
+        successLogin : function(data){
+            console.log(data);
+            let tmp =this;
+            localStorage.setItem("user",JSON.stringify(data));
+            setTimeout(function() {
+                tmp.$router.push({name : 'Home'});
+            }, 500);
+        },
         login : function(){
-            axios.post(config.API_LOGIN,qs.stringify({
+            let params = qs.stringify({
                 username : this.username,
                 password : this.password
-            }))
-            .then(res => {
-                let tmp =this;
-                setTimeout(function() {
-                    tmp.$router.push({name : 'Home'});
-                }, 500);
             })
-            .catch(err => {
-
-            })
+             Network.getDataFromApi(config.API_LOGIN,params,this.successLogin.bind(this),null)
         }
     }
 }

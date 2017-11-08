@@ -83,6 +83,11 @@ export default {
             password_confirm : "",
         }
     },
+    beforeRouteEnter: (to, from, next) => {
+        let user = localStorage.getItem('user');
+        if(user != null) next({name : "Home"})
+        else next()
+    },    
     methods : {
         register : function(){
             

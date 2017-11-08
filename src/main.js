@@ -6,7 +6,13 @@ import router from './router'
 import 'bootstrap/dist/js/bootstrap.min'
 import 'bootstrap/dist/css/bootstrap.min.css'
 Vue.config.productionTip = false
+import VueProgressBar from 'vue-progressbar'
 
+Vue.use(VueProgressBar, {
+  color: 'rgb(143, 255, 199)',
+  failedColor: 'red',
+  height: '2px'
+})
 /* eslint-disable no-new */
 new Vue({
   el: '#app',
