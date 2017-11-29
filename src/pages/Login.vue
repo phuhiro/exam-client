@@ -7,14 +7,16 @@
                 <div class="panel-heading">
                     <div class="panel-title">Sign In</div>
                     <div style="float:right; font-size: 80%; position: relative; top:-10px">
-                        <a href="#">Forgot password?</a>
+                       
                     </div>
                 </div>
 
                 <div style="padding-top:30px" class="panel-body">
 
                     <div style="display:none" id="login-alert" class="alert alert-danger col-sm-12"></div>
-
+                    <div class="alert alert-danger alert-dismissible" v-if="err">
+                        <strong>{{err}}!</strong>
+                    </div>
                     <form class="form-horizontal" role="form" @submit.prevent="login">
 
                         <div style="margin-bottom: 25px" class="input-group">
@@ -75,6 +77,7 @@ export default {
         return {
             username : '',
             password : '',
+            err : '',
         }
     },
     beforeRouteEnter: (to, from, next) => {
@@ -96,7 +99,9 @@ export default {
                 username : this.username,
                 password : this.password
             })
-             Network.getDataFromApi(config.API_LOGIN,params,this.successLogin.bind(this),null)
+             Network.getDataFromApi(config.API_LOGIN,params,this.successLogin.bind(this),function(err){
+                 this.err = "Username or password is incorrect"
+             }.bind(this))
         }
     }
 }

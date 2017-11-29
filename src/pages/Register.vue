@@ -10,6 +10,9 @@
                     </div>
                 </div>
                 <div class="panel-body">
+                    <div class="alert alert-danger alert-dismissible" v-if="err">
+                        <strong>{{err}}!</strong>
+                    </div>
                     <form method="POST" class="form-horizontal" @submit.prevent="register">
 
                         <div id="signupalert" style="display:none" class="alert alert-danger">
@@ -81,6 +84,7 @@ export default {
             email : "",
             password : "",
             password_confirm : "",
+            err : ""
         }
     },
     beforeRouteEnter: (to, from, next) => {
@@ -108,7 +112,7 @@ export default {
                     }, 500);                    
                 })
                 .catch(err => {
-                    
+                    this.err = err.response.data;
                 })
             }
         }

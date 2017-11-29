@@ -45,7 +45,7 @@
             </div>
           
         </div>
-        <button class="btn btn-info" type="button" @click="openModal">Tạo câu hỏi mới </button>
+        <button class="btn btn-info" type="button" @click="openModal">Thêm  câu hỏi mới </button>
         <div class="form-group"> 
             <div class="col-sm-offset-2 col-sm-10">
             <button type="button" class="btn btn-success btn-block" @click="submit">Submit</button>
@@ -125,6 +125,23 @@ import Navbar from '../components/general/Navbar'
 var qs = require('qs');
 export default {
     components : {Navbar},
+    beforeRouteEnter: (to, from, next) => {
+        let user = localStorage.getItem('user');
+        if(user != null) {
+        let tmp = JSON.parse(user);
+        if(tmp.role < 1){
+            next({name : "Home"})
+        } else next();
+        }
+        else {
+            next({name : "Login"})
+        }
+    },     
+    beforeMount(){
+        if(this.$route.meta.mode == 'edit'){
+            this.fetchExam();
+        }
+    },
     data() {
         return {
             cates : [],
@@ -171,6 +188,7 @@ export default {
             }.bind(this),null,'GET')
         },
         submit() {
+            
             let params = qs.stringify({
                 name : this.title,
                 duration : this.duration,
@@ -178,7 +196,24 @@ export default {
                 questions : this.lQuestion,
                 cateid : this.cateid
             });
-            Network.getDataFromApi(config.API_GET_EXAM+"/create",params,function(data){}.bind(this))
+            if(this.$route.meta.mode == 'edit'){
+                let id = this.$route.params.id;
+                Network.getDataFromApi(config.API_GET_EXAM+"/"+id,params,function(data){}.bind(this),null,'PUT')
+            } else {
+                Network.getDataFromApi(config.API_GET_EXAM+"/create",params,function(data){}.bind(this))
+            }
+            
+        },
+        fetchExam(){
+            let id = this.$route.params.id;
+            let params = qs.stringify({id : id});
+            Network.getDataFromApi(config.API_GET_EXAM+"/join",params,function(data){
+                this.title = data.name
+                this.description = data.description
+                this.duration = data.duration
+                this.cateid = data.cateid
+                this.lQuestion = data.questions
+            }.bind(this),null)
         }
     },
 }

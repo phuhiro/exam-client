@@ -6,7 +6,7 @@
           </div> 
           <div class="info">
             <span class="duration"><i class="fa fa-clock-o" aria-hidden="true"></i> {{duration}} phút</span>
-            <span class="info-user"><i class="fa fa-user-o" aria-hidden="true"></i> {{username}}</span>
+            <span class="info-user" v-if="username"><i class="fa fa-user-o" aria-hidden="true"></i> {{username}}</span>
           </div>
       </div>
     </div>

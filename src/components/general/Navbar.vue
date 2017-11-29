@@ -24,16 +24,21 @@
         <a class="dropdown-toggle" data-toggle="dropdown" href="#"><span class="glyphicon glyphicon-user"></span>{{user}}
         <span class="caret"></span></a>
         <ul class="dropdown-menu">
-          <li><router-link to="/"><span class="glyphicon glyphicon-user"></span> Edit Profile</router-link></li>
-          <li v-if="role == 1"><a href="#">Manage Exam</a></li>
+          
+          <li v-if="role == 1">
+            <router-link to="/exam/manage">Manage Exam</router-link>
+          </li>
+          <li v-if="role == 2">
+             <router-link to="admin">Admin</router-link>
+          </li>
           <li><a href="javascript:void(0)" @click="logout"><span class="glyphicon glyphicon-user"></span> Logout</a></li>
         </ul>
       </li>
         
       </ul>      
-      <form class="navbar-form navbar-center" v-if="!hiddenSearch">
+      <form class="navbar-form navbar-center" v-if="!hiddenSearch" v-on:submit.prevent="seachExam">
         <div class="form-group">
-          <input type="text" class="form-control" placeholder="Search">
+          <input type="text" class="form-control" placeholder="Search" v-model="keyword">
         </div>
         <button type="submit" class="btn btn-default">Search</button>
       </form>
@@ -50,6 +55,7 @@ export default {
         isLogin : null,
         user : "",
         role : 0,
+        keyword : ""
       }    
     },
     beforeMount(){
@@ -64,6 +70,9 @@ export default {
       logout : function() {
         localStorage.removeItem("user");
         this.isLogin = false;
+      }, 
+      seachExam() {
+        window.location = "/search/"+this.keyword
       }
     },
 }

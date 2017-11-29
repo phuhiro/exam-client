@@ -7,6 +7,9 @@ import Preview from '../pages/Preview.vue'
 import Exam from '../pages/ViewExam.vue'
 import Result from '../pages/Result.vue'
 import CreateExam from '../pages/CreateExam.vue'
+import ManageExam from '../pages/ManageExam.vue'
+import Admin from '../pages/Admin.vue'
+import Search from '../pages/Seach.vue'
 Vue.use(Router)
 
 export default new Router({
@@ -44,7 +47,30 @@ export default new Router({
     {
       path : "/exam/create",
       name : "CreateExam",
-      component : CreateExam
-    }
+      component : CreateExam,
+      meta: {mode: 'create'}
+    },
+    {
+      path : "/exam/manage",
+      name : "ManageExam",
+      component : ManageExam
+    },
+    {
+      path : "/exam/edit/:id",
+      name : "EditExam",
+      component : CreateExam,
+      meta: {mode: 'edit'}
+    },
+    {
+      path : "/admin",
+      name : "Admin",
+      component : Admin
+    },
+    {
+      path : "/search/:keyword",
+      name : "Search",
+      component : Search,
+     
+    },    
   ]
 })
